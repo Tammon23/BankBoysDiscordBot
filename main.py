@@ -5,7 +5,7 @@ import os
 # 🌟 remember pip3 install python-dotenv
 from dotenv import load_dotenv
 
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='!', help_command= None)
 
 client = discord.Client()
 
@@ -20,9 +20,15 @@ async def on_ready():
 
 # client.run(TOKEN)
 
+#ctx is short for context 
+#joshy commands 🚀 
 @bot.command()
 async def ping(ctx):
     await ctx.send(f"Bot latency is: {round(bot.latency * 1000)}ms")
+
+@bot.command()
+async def help(ctx):
+    await ctx.send("🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 \n!ping:[no args], returns the bot latency\n!help:[no args], returns usable commands")
 
 
 bot.run(TOKEN)
