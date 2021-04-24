@@ -28,8 +28,17 @@ async def ping(ctx):
 
 @bot.command()
 async def help(ctx):
-    await ctx.send("🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 \n!ping:[no args], returns the bot latency\n!help:[no args], returns usable commands")
+    await ctx.send("🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 \n!ping:[no args], returns the bot latency\n!help:[no args], returns usable commands\n!coin:[any coin e.g btcusdt] returns value of the coin")
 
+@bot.command()
+async def coin(ctx, args):
+    ref = args.upper()
+    print('Symbol: {ref}')
+    values = requests.get("https://api.binance.com/api/v3/ticker/price", params={"symbol": f'{ref}'}).json()
+    for key, value in values.items():
+        print(f'{key} : {value}')
+        print(value)
+        await ctx.send(f'{key} : {value}')
 
 bot.run(TOKEN)
 
