@@ -33,7 +33,7 @@ async def help(ctx):
 @bot.command()
 async def coin(ctx, args):
     ref = args.upper()
-    print('Symbol: {ref}')
+    print(f'Symbol: {ref}')
     values = requests.get("https://api.binance.com/api/v3/ticker/price", params={"symbol": f'{ref}'}).json()
     for key, value in values.items():
         print(f'{key} : {value}')
