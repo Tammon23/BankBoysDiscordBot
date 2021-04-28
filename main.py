@@ -7,18 +7,10 @@ from dotenv import load_dotenv
 
 bot = commands.Bot(command_prefix='!', help_command= None)
 
-client = discord.Client()
-
-load_dotenv()
-TOKEN = os.getenv('TOKEN')
-
-
-@client.event
+@bot.event
 async def on_ready():
-    print(f'This: {client.user} has connected')
+    print(f'This: {bot.user} has connected')
 
-
-# client.run(TOKEN)
 
 #ctx is short for context 
 #joshy commands 🚀 
@@ -40,8 +32,9 @@ async def coin(ctx, args):
         print(value)
         await ctx.send(f'{key} : {value}')
 
-bot.run(TOKEN)
 
 if __name__ == "__main__":
-    data = requests.get("https://api.binance.com/api/v3/ticker/price", params={"symbol": "BTCUSDT"}).json()
-    print(data)
+    load_dotenv()
+    #token for joshy jr
+    TOKEN = os.getenv('TOKEN')
+    bot.run(TOKEN)

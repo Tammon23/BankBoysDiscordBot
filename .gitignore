@@ -2,5 +2,4 @@
 # ignore vscode
 .vscode/
 
-#.envs
-.env
+#.env
