@@ -11,22 +11,22 @@ class Wallet(commands.Cog):
         self.db.connect_to_db()
 
     @staticmethod
-    def db_deposit(conn, guild, user, coinsymbol, price, savedate):
+    def db_deposit(conn, guild, user, coinsymbol, price, savedate, quantity):
         with conn.cursor() as cur:
             # inserting into the db the new data
-            cur.execute("INSERT INTO wallet (guildid, userid, coinsymbol, price, savedate) VALUES (%s, %s, %s, %s, %s);"
-                        , (guild, user, coinsymbol, price, savedate))
+            cur.execute("INSERT INTO wallet (guildid, userid, coinsymbol, price, savedate, quantity) VALUES (%2, %s, %s, %s, %s, %s);"
+                        , (guild, user, coinsymbol, price, savedate, quantity))
 
         conn.commit()
         logging.debug("deposit(): status message: %s", cur.statusmessage)
 
     @commands.command(help="!deposit coin, price")
     async def deposit(self, ctx, *args):
-        if len(args) != 2:
+        if len(args) != 3:
             await ctx.send("Incorrect usage.")
 
         else:
-            coin, price = args
+            coin, price, quantity = args
             price = str(price)
             price.replace("$", "")
 
@@ -34,7 +34,7 @@ class Wallet(commands.Cog):
             author = str(ctx.author.id)
 
             try:
-                self.db.run_transaction(lambda conn: self.db_deposit(conn, guild, author, coin, price, time.time_ns()))
+                self.db.run_transaction(lambda conn: self.db_deposit(conn, guild, author, coin, price, time.time_ns(), quantity))
                 await ctx.send(f"Updating wallet successful!")
 
             except ValueError as ve:
