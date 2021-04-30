@@ -17,9 +17,10 @@ class Database:
         if self.conn is not None:
             return self.conn
 
-        print("New db connection.")
         load_dotenv()
         self.conn = psycopg2.connect(os.getenv('COCKROACHDB'))
+        print("New db connection.")
+
         return self.conn
 
     def run_transaction(self, op, max_retries=3):
@@ -31,18 +32,18 @@ class Database:
         """
 
         if self.conn is None:
-            raise TypeError("Connection should not be None.")
+            raise TypeError("Connection should not be None. Did you run connect_to_db()?")
 
         # leaving this block the transaction will commit or rollback
         # (if leaving with an exception)
         with self.conn:
             for retry in range(1, max_retries + 1):
                 try:
-                    op(self.conn)
+                    result = op(self.conn)
 
                     # If we reach this point, we were able to commit, so we break
                     # from the retry loop.
-                    return
+                    return result
 
                 except SerializationFailure as e:
                     # This is a retry error, so we roll back the current
