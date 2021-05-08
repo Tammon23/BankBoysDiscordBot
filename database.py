@@ -14,14 +14,14 @@ class Database:
         pass
 
     def connect_to_db(self):
-        if self.conn is not None:
-            return self.conn
+        if Database.conn is not None:
+            return Database.conn
 
         load_dotenv()
-        self.conn = psycopg2.connect(os.getenv('COCKROACHDB'))
-        print("New db connection.")
+        Database.conn = psycopg2.connect(os.getenv('COCKROACHDB'))
+        print("New database connection made.")
 
-        return self.conn
+        return Database.conn
 
     def run_transaction(self, op, max_retries=3):
         """
@@ -31,15 +31,15 @@ class Database:
         *max_retries* times before giving up (and propagate it).
         """
 
-        if self.conn is None:
+        if Database.conn is None:
             raise TypeError("Connection should not be None. Did you run connect_to_db()?")
 
         # leaving this block the transaction will commit or rollback
         # (if leaving with an exception)
-        with self.conn:
+        with Database.conn:
             for retry in range(1, max_retries + 1):
                 try:
-                    result = op(self.conn)
+                    result = op(Database.conn)
 
                     # If we reach this point, we were able to commit, so we break
                     # from the retry loop.
@@ -50,7 +50,7 @@ class Database:
                     # transaction and sleep for a bit before retrying. The
                     # sleep time increases for each failed transaction.
                     logging.debug("got error: %s", e)
-                    self.conn.rollback()
+                    Database.conn.rollback()
                     logging.debug("EXECUTE SERIALIZATION_FAILURE BRANCH")
                     sleep_ms = (2 ** retry) * 0.1 * (random.random() + 0.5)
                     logging.debug("Sleeping %s seconds", sleep_ms)
