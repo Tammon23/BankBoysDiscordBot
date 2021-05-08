@@ -280,7 +280,7 @@ class Wallet(commands.Cog):
             embeds.append(embed)
 
         # Adding the worth up for each price in the footer of the last embed
-        embeds[-1].set_footer(text=f"Networth of known coins is ${net_worth} USDT")
+        embeds[-1].set_footer(text=f"Net worth of known coins is ${net_worth:,} USDT")
         return embeds
 
     @wallet.command(help="!wallet show")
