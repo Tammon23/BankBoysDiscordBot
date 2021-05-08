@@ -20,4 +20,5 @@ def get_currency(symbol, return_code=False):
 # checks to see if the pair is listed on binance
 def is_valid_pair(symbol):
     sym = symbol.upper().strip()
-    return sym in requests.get("https://api.binance.com/api/v3/ticker/price").json(), sym
+    r = requests.get("https://api.binance.com/api/v3/ticker/price", params={"symbol": symbol}).json()
+    return "symbol" in r and sym in r["symbol"], sym
