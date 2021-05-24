@@ -1,5 +1,8 @@
 
 # ignore vscode
 .vscode/
-
-#.env
+.env
+cc-ca.crt
+cogs/live_ticker.py
+cogs/referrals.py
+help.py
