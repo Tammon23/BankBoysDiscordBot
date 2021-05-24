@@ -1,19 +1,19 @@
+import os
+import discord
 import requests
 from discord.ext import commands
-import os
-# 🌟 remember pip3 install python-dotenv
+
 from dotenv import load_dotenv
 
 bot = commands.Bot(command_prefix='!', help_command=None)
 
-
 @bot.event
 async def on_ready():
     print(f'This: {bot.user} has connected')
-
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game("!help"))
 
 # ctx is short for context
-# joshy commands 🚀
+# Joshy commands 🚀
 @bot.command()
 async def ping(ctx):
     await ctx.send(f"Bot latency is: {round(bot.latency * 1000)}ms")
@@ -21,9 +21,14 @@ async def ping(ctx):
 
 @bot.command()
 async def help(ctx):
-    await ctx.send("🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 \n!ping:[no args], returns the bot latency\n!help:[no args], returns usable commands\n!coin:[any coin e.g btcusdt] returns value of the coin")
+    await ctx.send(
+        "🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 \n"
+        "!ping:[no args], returns the bot latency\n"
+        "!help:[no args], returns usable commands\n"
+        "!coin:[any coin e.g btcusdt] returns value of the coin")
 
-@bot.command()
+
+@bot.command(help="!coin <symbol>")
 async def coin(ctx, args):
     ref = args.upper()
     print(f'Symbol: {ref}')
@@ -33,13 +38,13 @@ async def coin(ctx, args):
         print(value)
         await ctx.send(f'{key} : {value}')
 
+# loading the cogs
+for filename in os.listdir("./cogs"):
+    if filename.endswith(".py"):
+        print(f"{filename[:-3]} Cog loaded")
+        bot.load_extension(f"cogs.{filename[:-3]}")
 
 if __name__ == "__main__":
-    for filename in os.listdir("./cogs"):
-        if filename.endswith(".py"):
-            bot.load_extension(f"cogs.{filename[:-3]}")
-
     load_dotenv()
-    # token for joshy jr
     TOKEN = os.getenv('TOKEN')
     bot.run(TOKEN)
