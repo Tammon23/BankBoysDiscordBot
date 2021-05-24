@@ -11,7 +11,7 @@ from database import Database as db
 from crypto import get_currency, is_valid_pair
 
 
-class Wallet(commands.Cog):
+class Wallet(commands.Cog, description="A wallet feature that allows you to track coin statistics"):
     def __init__(self, client):
         self.client = client
         self.db = db()
