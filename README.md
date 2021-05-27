@@ -49,4 +49,4 @@
 - [ ] Add the ability to search for more information related to a currency, including 24hr volumes, chart options, market cap...
 
 ---
-If any bugs are found or any suggestions are made, please feel free to post it in the issues tab
+If any bugs are found or any suggestions are made, please feel free to post it in the issues tab and alert Tammon23 (Ikenna) or nohack11 (Bill Shema)
